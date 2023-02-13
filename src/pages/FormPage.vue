@@ -6,18 +6,33 @@ const form = ref({
   name: String,
   dateSobriety: String
 })
-
-onMounted(() => {
-  form.value.name = null
-  form.value.dateSobriety = null
-})
 const router = useRouter()
 const db = new LocalBase('relogio-sobriedade')
+onMounted(async () => {
+  const retorno = await db.collection('dadosUsuario').get({ keys: true })
+  form.value.name = null
+  form.value.dateSobriety = null
+  form.value.key = null
+  if (retorno.length > 0) {
+    form.value.name = retorno[0].data.name
+    form.value.dateSobriety = retorno[0].data.dateSobriety
+    form.value.key = retorno[0].key
+  }
+})
+
 async function onSubmit () {
-  await db.collection('dadosUsuario').add({
-    name: form.value.name,
-    dateSobriety: form.value.dateSobriety
-  })
+  if (form.value.key == null) {
+    await db.collection('dadosUsuario').add({
+      name: form.value.name,
+      dateSobriety: form.value.dateSobriety
+    })
+  } else {
+    await db.collection('dadosUsuario').doc(form.value.key).set({
+      name: form.value.name,
+      dateSobriety: form.value.dateSobriety
+    })
+  }
+
   router.push({ path: '/dateCounter' })
 }
 

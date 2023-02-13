@@ -9,9 +9,9 @@ const db = new LocalBase('relogio-sobriedade')
 const diffInDays = ref(null)
 
 onMounted(async () => {
-  const retorno = await db.collection('dadosUsuario').get()
-  name.value = retorno[0].name
-  dateSobriety.value = retorno[0].dateSobriety
+  const retorno = await db.collection('dadosUsuario').get({ keys: true })
+  name.value = retorno[0].data.name
+  dateSobriety.value = retorno[0].data.dateSobriety
   const date = new Date()
   const day = await date.getDate()
   let month = await date.getMonth() + 1
