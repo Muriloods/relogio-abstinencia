@@ -1,14 +1,17 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import LocalBase from 'localbase'
+import { onMounted } from 'vue'
 
-const router = useRouter()
-const db = new LocalBase('relogio-sobriedade')
-const retorno = await db.collection('dadosUsuario').get({ keys: true })
+onMounted(async () => {
+  const router = useRouter()
+  const db = new LocalBase()
+  const retorno = await db.collection('dadosUsuario').get({ keys: true })
+  if (retorno.length > 0) {
+    router.push({ path: '/dateCounter' })
+  }
+})
 
-if (retorno.length > 0) {
-  router.push({ path: '/dateCounter' })
-}
 </script>
 <template>
     <q-page class="flex flex-center">
