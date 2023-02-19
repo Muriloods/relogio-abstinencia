@@ -32,7 +32,6 @@ async function onSubmit () {
       dateSobriety: form.value.dateSobriety
     })
   }
-
   router.push({ path: '/dateCounter' })
 }
 

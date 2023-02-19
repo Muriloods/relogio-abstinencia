@@ -1,10 +1,17 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 const leftDrawerOpen = ref(false)
 function toggleLeftDrawer () {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
-console.log('layout')
+
+function redirectForm () {
+  router.push({ path: '/form' })
+}
+
 </script>
 
 <template>
@@ -39,7 +46,7 @@ console.log('layout')
         </q-item-label>
         <q-item clickable v-ripple>
           <q-item-section>
-            <q-item-label @click="this.$router.push('/form')"><q-icon name="edit"/> Editar Dados</q-item-label>
+            <q-item-label @click="redirectForm"><q-icon name="edit"/> Editar Dados</q-item-label>
             <q-item-label caption>Editar</q-item-label>
           </q-item-section>
         </q-item>

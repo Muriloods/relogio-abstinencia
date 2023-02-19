@@ -3,14 +3,18 @@ import { useRouter } from 'vue-router'
 import LocalBase from 'localbase'
 import { onMounted } from 'vue'
 
+const router = useRouter()
+const db = new LocalBase()
 onMounted(async () => {
-  const router = useRouter()
-  const db = new LocalBase()
   const retorno = await db.collection('dadosUsuario').get({ keys: true })
   if (retorno.length > 0) {
     router.push({ path: '/dateCounter' })
   }
 })
+
+function redirectForm () {
+  router.push({ path: '/form' })
+}
 
 </script>
 <template>
@@ -33,7 +37,7 @@ onMounted(async () => {
         <br>
         <div class="row items-center">
           <div class="col text-center">
-            <q-btn color="primary" @click="this.$router.push('/form')" icon="start" label="Iniciar"></q-btn>
+            <q-btn color="primary" @click="redirectForm" icon="start" label="Iniciar"></q-btn>
           </div>
         </div>
       </div>
