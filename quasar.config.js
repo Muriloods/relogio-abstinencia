@@ -181,7 +181,8 @@ module.exports = configure(function (ctx) {
             sizes: '512x512',
             type: 'image/png'
           }
-        ]
+        ],
+        categories: ['education', 'lifestyle', 'social', 'utilities']
       }
     },
 

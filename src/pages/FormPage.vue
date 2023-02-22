@@ -10,6 +10,7 @@ const router = useRouter()
 const db = new LocalBase('relogio-sobriedade')
 onMounted(async () => {
   const retorno = await db.collection('dadosUsuario').get({ keys: true })
+  console.log(retorno)
   form.value.name = null
   form.value.dateSobriety = null
   form.value.key = null
@@ -21,6 +22,7 @@ onMounted(async () => {
 })
 
 async function onSubmit () {
+  console.log(form.value.key)
   if (form.value.key == null) {
     await db.collection('dadosUsuario').add({
       name: form.value.name,
@@ -62,7 +64,7 @@ async function onSubmit () {
           :rules="[ val => val && val.length > 0 || 'When is missing']"
         ></q-input>
         <div>
-          <q-btn label="Salvar" type="submit" @click="onSubmit" color="primary"></q-btn>
+          <q-btn label="Salvar" @click="onSubmit" color="primary"></q-btn>
         </div>
       </q-form>
     </div>

@@ -1,0 +1,6 @@
+[{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target" : { "namespace": "android_app", "package_name": "app.netlify.sobriety_watch.twa",
+                     "sha256_cert_fingerprints": ["1F:D3:CA:C9:AB:79:BE:ED:9A:D5:50:6F:50:E8:70:4E:BB:31:8A:0F:BD:67:8F:CF:12:39:09:0C:87:96:11:78"] }
+      }
+]

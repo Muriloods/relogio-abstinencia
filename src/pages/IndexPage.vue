@@ -4,9 +4,11 @@ import LocalBase from 'localbase'
 import { onMounted } from 'vue'
 
 const router = useRouter()
-const db = new LocalBase()
+const db = new LocalBase('relogio-sobriedade')
+
 onMounted(async () => {
   const retorno = await db.collection('dadosUsuario').get({ keys: true })
+  console.log(retorno)
   if (retorno.length > 0) {
     router.push({ path: '/dateCounter' })
   }
