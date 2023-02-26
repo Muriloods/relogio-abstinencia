@@ -1,11 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+// import { useQuasar } from 'quasar'
 import LocalBase from 'localbase'
+
 const form = ref({
   name: String,
   dateSobriety: String
 })
+// const $q = useQuasar()
 const router = useRouter()
 const db = new LocalBase('relogio-sobriedade')
 onMounted(async () => {
@@ -22,13 +25,23 @@ onMounted(async () => {
 })
 
 async function onSubmit () {
-  console.log(form.value.key)
+  console.log(form.value.dateSobriety)
   if (form.value.key == null) {
+    if (new Date(form.value.dateSobriety) > new Date()) {
+      alert('Não é permitido Data Futura!')
+      // $q.notify('Não é permitido Data Futura!')
+      return
+    }
     await db.collection('dadosUsuario').add({
       name: form.value.name,
       dateSobriety: form.value.dateSobriety
     })
   } else {
+    if (new Date(form.value.dateSobriety) > new Date()) {
+      alert('Não é permitido Data Futura!')
+      // $q.notify('Não é permitido Data Futura!')
+      return
+    }
     await db.collection('dadosUsuario').doc(form.value.key).set({
       name: form.value.name,
       dateSobriety: form.value.dateSobriety
@@ -61,7 +74,6 @@ async function onSubmit () {
           label="Quando usou pela última vez?"
           lazy-rules
           hint="Seja honesto, álccol também é droga!"
-          :rules="[ val => val && val.length > 0 || 'When is missing']"
         ></q-input>
         <div>
           <q-btn label="Salvar" @click="onSubmit" color="primary"></q-btn>
@@ -69,6 +81,7 @@ async function onSubmit () {
       </q-form>
     </div>
   </q-page>
+  <Notify></Notify>
 </template>
 
 <style scoped>
