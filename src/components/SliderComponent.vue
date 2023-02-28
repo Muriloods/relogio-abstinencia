@@ -1,18 +1,15 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-import LocalBase from 'localbase'
-
+import { inject, onMounted, ref } from 'vue'
 const diffInDays = ref(null)
 const slide = ref('days')
 const dateSobriety = ref(null)
 const name = ref(null)
-const db = new LocalBase('relogio-sobriedade')
+const db = inject('db')
 
 onMounted(async () => {
   const retorno = await db.collection('dadosUsuario').get({ keys: true })
   name.value = retorno[0].data.name
   dateSobriety.value = retorno[0].data.dateSobriety
-  console.log(dateSobriety.value)
   let date = new Date()
   let day = date.getDate()
   let month = date.getMonth() + 1
@@ -20,7 +17,8 @@ onMounted(async () => {
   const now = `${year}-${month}-${day}`
 
   date = new Date(dateSobriety.value)
-  day = date.getDate() + 1
+  date.setDate(date.getDate() + 1)
+  day = date.getDate()
   month = date.getMonth() + 1
   year = date.getFullYear()
   dateSobriety.value = new Date(`${year}-${month}-${day}`)

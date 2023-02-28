@@ -1,14 +1,12 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import LocalBase from 'localbase'
-import { onMounted } from 'vue'
+import { inject, onMounted } from 'vue'
 
 const router = useRouter()
-const db = new LocalBase('relogio-sobriedade')
+const db = inject('db')
 
 onMounted(async () => {
   const retorno = await db.collection('dadosUsuario').get({ keys: true })
-  console.log(retorno)
   if (retorno.length > 0) {
     router.push({ path: '/dateCounter' })
   }

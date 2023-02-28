@@ -1,16 +1,14 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import { useRouter } from 'vue-router'
-// import { useQuasar } from 'quasar'
-import LocalBase from 'localbase'
-
+import { useQuasar } from 'quasar'
+const $q = useQuasar()
 const form = ref({
   name: String,
   dateSobriety: String
 })
-// const $q = useQuasar()
+const db = inject('db')
 const router = useRouter()
-const db = new LocalBase('relogio-sobriedade')
 onMounted(async () => {
   const retorno = await db.collection('dadosUsuario').get({ keys: true })
   console.log(retorno)
@@ -25,23 +23,21 @@ onMounted(async () => {
 })
 
 async function onSubmit () {
-  console.log(form.value.dateSobriety)
+  const date = new Date(form.value.dateSobriety)
+  date.setDate(date.getDate() + 1)
+  if (date > new Date()) {
+    $q.notify({
+      type: 'negative',
+      message: 'Não é permitido Data Futura!'
+    })
+    return
+  }
   if (form.value.key == null) {
-    if (new Date(form.value.dateSobriety) > new Date()) {
-      alert('Não é permitido Data Futura!')
-      // $q.notify('Não é permitido Data Futura!')
-      return
-    }
     await db.collection('dadosUsuario').add({
       name: form.value.name,
       dateSobriety: form.value.dateSobriety
     })
   } else {
-    if (new Date(form.value.dateSobriety) > new Date()) {
-      alert('Não é permitido Data Futura!')
-      // $q.notify('Não é permitido Data Futura!')
-      return
-    }
     await db.collection('dadosUsuario').doc(form.value.key).set({
       name: form.value.name,
       dateSobriety: form.value.dateSobriety
@@ -81,7 +77,6 @@ async function onSubmit () {
       </q-form>
     </div>
   </q-page>
-  <Notify></Notify>
 </template>
 
 <style scoped>
