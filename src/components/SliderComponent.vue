@@ -1,10 +1,10 @@
 <script setup>
-import { inject, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { db } from 'boot/database'
 const diffInDays = ref(null)
 const slide = ref('days')
 const dateSobriety = ref(null)
 const name = ref(null)
-const db = inject('db')
 
 onMounted(async () => {
   const retorno = await db.collection('dadosUsuario').get({ keys: true })

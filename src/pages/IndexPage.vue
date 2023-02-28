@@ -1,17 +1,15 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { inject, onMounted } from 'vue'
+import { onMounted } from 'vue'
+import { db } from 'boot/database'
 
 const router = useRouter()
-const db = inject('db')
-
 onMounted(async () => {
   const retorno = await db.collection('dadosUsuario').get({ keys: true })
   if (retorno.length > 0) {
     router.push({ path: '/dateCounter' })
   }
 })
-
 function redirectForm () {
   router.push({ path: '/form' })
 }

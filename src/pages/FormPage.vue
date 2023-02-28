@@ -1,13 +1,13 @@
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { db } from 'boot/database'
 const $q = useQuasar()
 const form = ref({
   name: String,
   dateSobriety: String
 })
-const db = inject('db')
 const router = useRouter()
 onMounted(async () => {
   const retorno = await db.collection('dadosUsuario').get({ keys: true })
