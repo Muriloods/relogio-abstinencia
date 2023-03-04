@@ -9,7 +9,8 @@ const dayCitation = ref({
   date: String
 })
 const date = new Date()
-const day = date.getDate()
+let day = date.getDate()
+day = day < 10 ? `0${day}` : day
 let month = date.getMonth() + 1
 month = month < 10 ? '0' + month : month
 const jftNow = jft[0].pt_br.filter(citation => {
