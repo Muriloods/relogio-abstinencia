@@ -9,8 +9,9 @@ onMounted(async () => {
   if (retorno.length > 0) {
     if (retorno[0].data.addiction === undefined) {
       await db.collection('dadosUsuario').delete()
+    } else {
+      router.push({ path: `/dateCounter/${retorno[0].key}` })
     }
-    router.push({ path: `/dateCounter/${retorno[0].key}` })
   }
 })
 function redirectForm () {
