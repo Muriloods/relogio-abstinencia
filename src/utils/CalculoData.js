@@ -100,14 +100,30 @@ class CalculoData {
         return 28
       }
     }
-    // eslint-disable-next-line no-constant-condition
-    if ((mesRecente = 1) || (mesRecente = 3) || (mesRecente = 5) || (mesRecente = 7) || (mesRecente = 8) || (mesRecente = 10) || (mesRecente = 12)) {
+
+    if ((mesRecente === 1) || (mesRecente === 3) || (mesRecente === 5) || (mesRecente === 7) || (mesRecente === 8) || (mesRecente === 10) || (mesRecente === 12)) {
       return 31
     }
-    // eslint-disable-next-line no-constant-condition
-    if ((mesRecente = 4) || (mesRecente = 6) || (mesRecente = 9) || (mesRecente = 11)) {
+
+    if ((mesRecente === 4) || (mesRecente === 6) || (mesRecente === 9) || (mesRecente === 11)) {
       return 30
     }
+  }
+  // eslint-disable-next-line lines-between-class-members
+  calculaDias (dataInicio, dataAtual) {
+    let dataI = dataInicio.split('/')
+    let ano = dataI[2]
+    let mes = dataI[1]
+    let dia = dataI[0]
+    dataI = `${ano}/${mes}/${dia}`
+    let dataF = dataAtual.split('/')
+    ano = dataF[2]
+    mes = dataF[1]
+    dia = dataF[0]
+    dataF = `${ano}/${mes}/${dia}`
+    const diffInMs = Math.abs(new Date(dataF)) - Math.abs(new Date(dataI))
+    const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24))
+    return diffInDays
   }
 }
 

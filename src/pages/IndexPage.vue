@@ -7,11 +7,14 @@ const router = useRouter()
 onMounted(async () => {
   const retorno = await db.collection('dadosUsuario').get({ keys: true })
   if (retorno.length > 0) {
-    router.push({ path: '/dateCounter' })
+    if (retorno[0].data.addiction === undefined) {
+      await db.collection('dadosUsuario').delete()
+    }
+    router.push({ path: `/dateCounter/${retorno[0].key}` })
   }
 })
 function redirectForm () {
-  router.push({ path: '/form' })
+  router.push({ path: '/form/new/' })
 }
 
 </script>

@@ -2,12 +2,16 @@
 import { ref, onMounted } from 'vue'
 import { db } from 'boot/database'
 import { calculoData } from 'src/utils/CalculoData'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
+const keyActive = ref(route.params.key)
 const diffInDays = ref(null)
 const years = ref(null)
 const slide = ref('fullCounter')
 const dateSobriety = ref(null)
 const name = ref(null)
+const addiction = ref(null)
 const fullCounter = ref(null)
 const progress = ref({
   year: {
@@ -24,23 +28,15 @@ const progress = ref({
   }
 })
 onMounted(async () => {
-  db.collection('dadosUsuario').get({ keys: true }).then(retorno => {
-    name.value = retorno[0].data.name
-    dateSobriety.value = retorno[0].data.dateSobriety
-    let date = new Date()
-    const day = date.getDate()
-    const month = date.getMonth() + 1
-    const year = date.getFullYear()
-    let now = `${year}-${month}-${day}`
-
-    date = new Date(dateSobriety.value)
+  db.collection('dadosUsuario').doc(keyActive.value).get({ keys: true }).then(retorno => {
+    name.value = retorno.name
+    addiction.value = retorno.addiction
+    const date = new Date(retorno.dateSobriety)
     date.setDate(date.getDate() + 1)
-    dateSobriety.value = date
-    const diffInMs = Math.abs(new Date(now)) - Math.abs(dateSobriety.value)
-    diffInDays.value = Math.ceil(diffInMs / (1000 * 60 * 60 * 24))
-    dateSobriety.value = dateSobriety.value.toLocaleDateString()
-    now = new Date(now)
+    dateSobriety.value = new Intl.DateTimeFormat('pt-BR').format(date)
+    let now = new Date()
     now = new Intl.DateTimeFormat('pt-BR').format(now)
+    diffInDays.value = calculoData.calculaDias(dateSobriety.value, now)
     fullCounter.value = calculoData.calculaData(dateSobriety.value, now)
     progress.value.year.label = `${fullCounter.value.anos} anos`
     progress.value.month.label = `${fullCounter.value.meses} meses`
@@ -67,7 +63,7 @@ onMounted(async () => {
     class="bg-primary text-white shadow-1 rounded-borders"
   >
     <q-carousel-slide name="fullCounter" class="column no-wrap flex-center">
-      <div>Livre das drogas há</div>
+      <div>Sem {{ addiction }} há</div>
       <q-linear-progress v-show="years > 0" size="50px" :value="progress.year.value" color="orange-4" class="q-mt-sm">
         <div class="absolute-full flex flex-center">
           <q-badge color="orange-4" text-color="white" :label="progress.year.label" />
@@ -85,7 +81,7 @@ onMounted(async () => {
       </q-linear-progress>
     </q-carousel-slide>
     <q-carousel-slide name="days" class="column no-wrap flex-center">
-      <div>Livre das drogas há</div>
+      <div>Sem {{ addiction }} há</div>
       <div class="q-mt-md text-center text-h1">
         {{ diffInDays }}
       </div>

@@ -17,14 +17,14 @@ const routes = [
     component: () => import('pages/ErrorNotFound.vue')
   },
   {
-    path: '/form',
+    path: '/form/:key',
     component: () => import('layouts/IndexLayout.vue'),
     children: [
       { path: '', component: () => import('pages/FormPage.vue') }
     ]
   },
   {
-    path: '/dateCounter',
+    path: '/dateCounter/:key',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/DateCounterPage.vue') }

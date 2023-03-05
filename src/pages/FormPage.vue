@@ -1,24 +1,43 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { db } from 'boot/database'
 const $q = useQuasar()
 const form = ref({
-  name: String,
-  dateSobriety: String
+  id: null,
+  name: null,
+  dateSobriety: null,
+  addiction: null
 })
+
+const activeKey = ref(null)
+
+const options = ref([
+  'Álcool',
+  'Cocaína',
+  'Maconha',
+  'Crack',
+  'Heroína',
+  'LSD',
+  'Êxtase',
+  'Jogos de Azar',
+  'Cigarro',
+  'Sexo',
+  'Pornografia',
+  'Internet'
+])
 const router = useRouter()
+let parametros = useRoute()
+parametros = parametros.params
+
 onMounted(async () => {
-  const retorno = await db.collection('dadosUsuario').get({ keys: true })
-  console.log(retorno)
-  form.value.name = null
-  form.value.dateSobriety = null
-  form.value.key = null
-  if (retorno.length > 0) {
-    form.value.name = retorno[0].data.name
-    form.value.dateSobriety = retorno[0].data.dateSobriety
-    form.value.key = retorno[0].key
+  if (parametros.key !== 'new') {
+    const retorno = await db.collection('dadosUsuario').doc(parametros.key).get({ keys: true })
+    form.value.id = retorno.id
+    form.value.name = retorno.name
+    form.value.dateSobriety = retorno.dateSobriety
+    form.value.addiction = retorno.addiction
   }
 })
 
@@ -32,25 +51,33 @@ async function onSubmit () {
     })
     return
   }
-  if (form.value.key == null) {
+  if (parametros.key === 'new') {
     await db.collection('dadosUsuario').add({
-      name: form.value.name,
-      dateSobriety: form.value.dateSobriety
+      id: new Date().getTime(),
+      name: form.value.name === '' ? 'Anônimo' : form.value.name,
+      dateSobriety: form.value.dateSobriety,
+      addiction: form.value.addiction
+    })
+    await db.collection('dadosUsuario').orderBy('id', 'desc').get({ keys: true }).then(users => {
+      activeKey.value = users[0].key
     })
   } else {
-    await db.collection('dadosUsuario').doc(form.value.key).set({
-      name: form.value.name,
-      dateSobriety: form.value.dateSobriety
+    await db.collection('dadosUsuario').doc(parametros.key).set({
+      id: form.value.id,
+      name: form.value.name === null ? 'Anônimo' : form.value.name,
+      dateSobriety: form.value.dateSobriety,
+      addiction: form.value.addiction
     })
+    activeKey.value = parametros.key
   }
-  router.push({ path: '/dateCounter' })
+  router.push({ path: `/dateCounter/${activeKey.value}` })
 }
 
 </script>
 
 <template>
   <q-page class="flex flex-center">
-    <div class="q-pa-md" style="max-width: 400px">
+    <div class="q-pa-md" style="max-width: 1000px">
       <q-form
         class="q-gutter-md"
       >
@@ -58,18 +85,21 @@ async function onSubmit () {
           filled
           v-model="form.name"
           label="Seu Nome"
-          hint="Nome e Sobrenome"
+          hint="Deixe vazio caso não queira informar"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
         ></q-input>
+        <q-select
+          filled
+          v-model="form.addiction"
+          :options="options"
+          label="Qual seu vício?" />
         <q-input
           filled
           type="date"
           v-model="form.dateSobriety"
           stack-label
-          label="Quando usou pela última vez?"
+          label="Data de Início da Abstinência"
           lazy-rules
-          hint="Seja honesto, álccol também é droga!"
         ></q-input>
         <div>
           <q-btn label="Salvar" @click="onSubmit" color="primary"></q-btn>
