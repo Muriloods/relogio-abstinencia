@@ -12,8 +12,7 @@ const form = ref({
 })
 
 const activeKey = ref(null)
-
-const options = ref([
+const stringOptions = [
   'Álcool',
   'Cocaína',
   'Maconha',
@@ -26,7 +25,9 @@ const options = ref([
   'Sexo',
   'Pornografia',
   'Internet'
-])
+]
+
+const options = ref(null)
 const router = useRouter()
 let parametros = useRoute()
 parametros = parametros.params
@@ -73,6 +74,23 @@ async function onSubmit () {
   router.push({ path: `/dateCounter/${activeKey.value}` })
 }
 
+function filterFn (val, update) {
+  if (val === '') {
+    update(() => {
+      options.value = stringOptions
+
+      // here you have access to "ref" which
+      // is the Vue reference of the QSelect
+    })
+    return
+  }
+
+  update(() => {
+    const needle = val.toLowerCase()
+    options.value = stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
+  })
+}
+
 </script>
 
 <template>
@@ -89,10 +107,19 @@ async function onSubmit () {
           lazy-rules
         ></q-input>
         <q-select
+          label="Qual seu vício?"
           filled
-          v-model="form.addiction"
           :options="options"
-          label="Qual seu vício?" />
+          v-model="form.addiction"
+          use-input
+          use-chips
+          hide-dropdown-icon
+          @filter="filterFn"
+          input-debounce="0"
+          new-value-mode="add"
+          style="width: 250px"
+          hint="Caso não encontre, escreva seu vício."
+        />
         <q-input
           filled
           type="date"

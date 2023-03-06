@@ -5,7 +5,7 @@ import { db } from 'boot/database'
 
 const router = useRouter()
 const route = useRoute()
-const keyAtive = ref(route.params.key)
+const keyActive = ref(route.params.key)
 const leftDrawerOpen = ref(false)
 const addictions = ref(null)
 function toggleLeftDrawer () {
@@ -73,33 +73,23 @@ function redirect (key) {
                 v-for="addiction in addictions"
                 :key="addiction.key"
                 >
-          <q-item-section v-show="addiction.key !== keyAtive"
+          <q-item-section v-show="addiction.key !== keyActive"
             @click="redirect(addiction.key)"
             class="bg-blue-grey-13 text-center q-pa-xs rounded-borders"
           >
             <q-item-label class="text-white">{{ addiction.addiction }}</q-item-label>
           </q-item-section>
-          <q-item-section v-show="addiction.key === keyAtive"
+          <q-item-section v-show="addiction.key === keyActive"
                           @click="redirect(addiction.key)"
                           class="bg-primary text-center q-pa-xs rounded-borders"
           >
             <q-item-label class="text-white">{{ addiction.addiction }}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable class="bg-teal-6">
-          <q-item-section
-            class="bg-blue-grey-13 text-center q-pa-xs rounded-borders"
-            @click="redirect('new')"
-          >
-            <q-item-label
-              header
-              class="text-white"
-            >
-              Adicionar
-            </q-item-label>
-          </q-item-section>
-        </q-item>
       </q-list>
+      <div class="text-center bg-teal q-pa-xs">
+        <q-btn round color="primary" icon="add" @click="redirect('new')" />
+      </div>
     </q-drawer>
 
     <q-page-container>
