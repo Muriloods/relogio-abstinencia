@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { db } from 'boot/database'
@@ -10,6 +10,8 @@ const form = ref({
   dateSobriety: null,
   addiction: null
 })
+
+const isFirstVicious = ref(null)
 
 const activeKey = ref(null)
 const stringOptions = [
@@ -32,13 +34,15 @@ const router = useRouter()
 let parametros = useRoute()
 parametros = parametros.params
 
-onMounted(async () => {
+db.collection('dadosUsuario').get({ keys: true }).then(retorno => {
+  isFirstVicious.value = retorno.length === 0
   if (parametros.key !== 'new') {
-    const retorno = await db.collection('dadosUsuario').doc(parametros.key).get({ keys: true })
-    form.value.id = retorno.id
-    form.value.name = retorno.name
-    form.value.dateSobriety = retorno.dateSobriety
-    form.value.addiction = retorno.addiction
+    db.collection('dadosUsuario').doc(parametros.key).get({ keys: true }).then(ret => {
+      form.value.id = ret.id
+      form.value.name = ret.name
+      form.value.dateSobriety = ret.dateSobriety
+      form.value.addiction = ret.addiction
+    })
   }
 })
 
@@ -78,9 +82,6 @@ function filterFn (val, update) {
   if (val === '') {
     update(() => {
       options.value = stringOptions
-
-      // here you have access to "ref" which
-      // is the Vue reference of the QSelect
     })
     return
   }
@@ -89,6 +90,10 @@ function filterFn (val, update) {
     const needle = val.toLowerCase()
     options.value = stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
   })
+}
+
+function setModel (val) {
+  form.value.addiction = val
 }
 
 </script>
@@ -100,6 +105,7 @@ function filterFn (val, update) {
         class="q-gutter-md"
       >
         <q-input
+          v-show="isFirstVicious"
           filled
           v-model="form.name"
           label="Seu Nome"
@@ -110,14 +116,14 @@ function filterFn (val, update) {
           label="Qual seu vício?"
           filled
           :options="options"
-          v-model="form.addiction"
+          :model-value="form.addiction"
           use-input
-          use-chips
-          hide-dropdown-icon
+          hide-selected
+          fill-input
           @filter="filterFn"
           input-debounce="0"
-          new-value-mode="add"
-          style="width: 250px"
+          @input-value="setModel"
+          style="width: 250px; padding-bottom: 32px"
           hint="Caso não encontre, escreva seu vício."
         />
         <q-input
