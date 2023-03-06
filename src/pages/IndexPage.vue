@@ -27,6 +27,7 @@ function redirectForm () {
             <h5>Relógio da Sobriedade</h5>
           </div>
         </div>
+        
         <div class="row items-center">
           <div class="col text-center">
             <img
