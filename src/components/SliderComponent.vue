@@ -8,6 +8,7 @@ const route = useRoute()
 const keyActive = ref(route.params.key)
 const diffInDays = ref(null)
 const years = ref(null)
+const months = ref(null)
 const slide = ref('fullCounter')
 const dateSobriety = ref(null)
 const name = ref(null)
@@ -44,6 +45,7 @@ onMounted(async () => {
     progress.value.month.value = fullCounter.value.meses / 12
     progress.value.day.value = fullCounter.value.dias / 30
     years.value = fullCounter.value.anos
+    months.value = fullCounter.value.meses
   })
 })
 
@@ -59,7 +61,7 @@ onMounted(async () => {
     navigation
     padding
     arrows
-    height="230px"
+    height="300px"
     class="bg-primary text-white shadow-1 rounded-borders"
   >
     <q-carousel-slide name="fullCounter" class="column no-wrap flex-center">
@@ -69,7 +71,7 @@ onMounted(async () => {
           <q-badge color="orange-4" text-color="white" :label="progress.year.label" />
         </div>
       </q-linear-progress>
-      <q-linear-progress size="50px" :value="progress.month.value" color="green-6" class="q-mt-sm">
+      <q-linear-progress v-show="months > 0" size="50px" :value="progress.month.value" color="green-6" class="q-mt-sm">
         <div class="absolute-full flex flex-center">
           <q-badge color="green-6" text-color="white" :label="progress.month.label" />
         </div>

@@ -47,15 +47,19 @@ db.collection('dadosUsuario').get({ keys: true }).then(retorno => {
 })
 
 async function onSubmit () {
-  const date = new Date(form.value.dateSobriety)
+  let date = new Date(form.value.dateSobriety)
   date.setDate(date.getDate() + 1)
-  if (date > new Date()) {
+  date = new Intl.DateTimeFormat('en-US').format(date)
+  let now = new Date()
+  now = new Intl.DateTimeFormat('en-US').format(now)
+  if (new Date(date) > new Date(now)) {
     $q.notify({
       type: 'negative',
       message: 'Não é permitido Data Futura!'
     })
     return
   }
+
   if (parametros.key === 'new') {
     await db.collection('dadosUsuario').add({
       id: new Date().getTime(),

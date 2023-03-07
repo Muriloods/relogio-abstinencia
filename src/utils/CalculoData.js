@@ -1,21 +1,21 @@
 class CalculoData {
   calculaData (dataInicio, dataAtual) {
-    var data = dataInicio.split('/')
-    var ano = data[2]
-    var mes = data[1]
-    var dia = data[0]
+    const data = dataInicio.split('/')
+    const ano = data[2]
+    const mes = data[1]
+    const dia = data[0]
 
-    var dataAtu = dataAtual.split('/')
-    var anoAtual = dataAtu[2]
-    var mesAtual = dataAtu[1]
-    var diaAtual = dataAtu[0]
+    const dataAtu = dataAtual.split('/')
+    const anoAtual = dataAtu[2]
+    const mesAtual = dataAtu[1]
+    const diaAtual = dataAtu[0]
 
     if (anoAtual >= ano) {
       if (mesAtual >= mes) {
         if (diaAtual >= dia) {
-          var idade = anoAtual - ano
-          var idadeMes = mesAtual - mes
-          var idadeDia = diaAtual - dia
+          const idade = anoAtual - ano
+          const idadeMes = mesAtual - mes
+          const idadeDia = diaAtual - dia
           return {
             anos: idade,
             meses: idadeMes,
@@ -23,10 +23,10 @@ class CalculoData {
           }
         } else {
           if (mesAtual > mes) {
-            idade = anoAtual - ano
-            idadeMes = mesAtual - mes
+            const idade = anoAtual - ano
+            let idadeMes = mesAtual - mes
             idadeMes--
-            idadeDia = diaAtual - dia
+            let idadeDia = diaAtual - dia
             if (mesAtual === 1) {
               idadeDia += this.calculaDiasMes(12, anoAtual)
             } else {
@@ -39,11 +39,11 @@ class CalculoData {
             }
           } else {
             if (anoAtual > ano) {
-              idade = anoAtual - ano
+              let idade = anoAtual - ano
               idade--
-              idadeMes = mesAtual - mes
+              let idadeMes = mesAtual - mes
               idadeMes += 12 - 1
-              idadeDia = diaAtual - dia
+              let idadeDia = diaAtual - dia
               if (mesAtual === 1) {
                 idadeDia += this.calculaDiasMes(12, anoAtual)
               } else {
@@ -60,22 +60,22 @@ class CalculoData {
       } else {
         if (anoAtual > ano) {
           if (diaAtual >= dia) {
-            idade = anoAtual - ano
+            let idade = anoAtual - ano
             idade--
-            idadeMes = mesAtual - mes
+            let idadeMes = mesAtual - mes
             idadeMes += 12
-            idadeDia = diaAtual - dia
+            const idadeDia = diaAtual - dia
             return {
               anos: idade,
               meses: idadeMes,
               dias: idadeDia
             }
           } else {
-            idade = anoAtual - ano
+            let idade = anoAtual - ano
             idade--
-            idadeMes = mesAtual - mes
+            let idadeMes = mesAtual - mes
             idadeMes += 12 - 1
-            idadeDia = diaAtual - dia
+            let idadeDia = diaAtual - dia
             if (mesAtual === 1) {
               idadeDia += this.calculaDiasMes(12, anoAtual)
             } else {
