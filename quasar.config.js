@@ -153,9 +153,9 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: 'Relógio da Sobriedade',
-        short_name: 'Relógio da Sobriedade',
-        description: 'Relógio da Sobriedade',
+        name: 'Relógio da Abstinência',
+        short_name: 'Relógio da Abstinência',
+        description: 'Relógio da Abstinência',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -221,7 +221,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'relogio-sobriedade'
+        appId: 'relogio-abstinência'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

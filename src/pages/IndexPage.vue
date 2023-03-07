@@ -24,7 +24,7 @@ function redirectForm () {
       <div class="q-pa-md doc-container">
         <div class="row items-center">
           <div class="col text-center">
-            <h5>Relógio da Sobriedade</h5>
+            <h5>Relógio da Abstinência</h5>
           </div>
         </div>
         <div class="row items-center">

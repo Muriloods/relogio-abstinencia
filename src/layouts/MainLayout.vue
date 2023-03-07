@@ -53,6 +53,9 @@ function redirect (key) {
     location.reload()
   }
 }
+function edit (key) {
+  router.push({ path: `/form/${key}` })
+}
 
 function delet (key) {
   db.collection('dadosUsuario').doc(key).delete().then(sucess => {
@@ -100,7 +103,7 @@ function delet (key) {
       class="bg-light-blue-1"
     >
       <q-list>
-        <q-item class="bg-teal-6">
+        <q-item class="bg-primary">
           <q-item-label
             header
             class="text-white"
@@ -112,30 +115,19 @@ function delet (key) {
                 v-for="addiction in addictions"
                 :key="addiction.key"
         >
-          <q-item-section v-show="addiction.key !== keyActive">
+          <q-item-section>
             <q-card>
-              <q-card-section class="bg-blue-grey-13 text-white">
+              <q-card-section
+                class="text-white"
+                :class="{'bg-primary': (addiction.key === keyActive),
+                'bg-blue-grey-13': (addiction.key !== keyActive)}"
+              >
                 <div class="text-body1">{{ addiction.addiction }}</div>
                 <div class="text-caption">{{ addiction.days }} dias</div>
               </q-card-section>
-
               <q-card-actions align="around">
                 <q-btn size="10px" @click="redirect(addiction.key)" round color="primary" icon="visibility" />
-                <q-btn size="10px" @click="delet(addiction.key)" round color="negative" icon="delete" />
-              </q-card-actions>
-            </q-card>
-          </q-item-section>
-          <q-item-section v-show="addiction.key === keyActive"
-                          class="bg-primary text-center q-pa-xs rounded-borders"
-          >
-            <q-card>
-              <q-card-section class="bg-primary text-white">
-                <div class="text-body1">{{ addiction.addiction }}</div>
-                <div class="text-caption">{{ addiction.days }} dias</div>
-              </q-card-section>
-
-              <q-card-actions align="around">
-                <q-btn @click="redirect(addiction.key)" size="10px" round color="primary" icon="visibility" />
+                <q-btn size="10px" @click="edit(addiction.key)" round color="secondary" icon="edit" />
                 <q-btn size="10px" @click="delet(addiction.key)" round color="negative" icon="delete" />
               </q-card-actions>
             </q-card>
@@ -146,6 +138,12 @@ function delet (key) {
         <q-btn fab icon="add" @click="redirect('new')" color="primary" />
       </q-page-sticky>
     </q-drawer>
+
+    <q-footer elevated>
+      <q-toolbar class="glossy text-center">
+        <q-toolbar-title class="text-caption">Relógio da Abstinência 2023</q-toolbar-title>
+      </q-toolbar>
+    </q-footer>
 
     <q-page-container>
       <router-view />

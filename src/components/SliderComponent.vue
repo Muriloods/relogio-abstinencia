@@ -90,7 +90,7 @@ onMounted(async () => {
       <div> dias</div>
     </q-carousel-slide>
     <q-carousel-slide name="dateSobriety" class="column no-wrap flex-center">
-      <div>Minha data de início de sobriedade</div>
+      <div>Minha data de início de abstinência</div>
       <div class="q-mt-md text-center text-h4">
         {{ dateSobriety }}
       </div>

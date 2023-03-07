@@ -1,8 +1,8 @@
 {
-  "name": "relogio-sobriedade",
+  "name": "relogio-abstinência",
   "version": "0.0.1",
-  "description": "Relógio da Sobriedade",
-  "productName": "Relógio da Sobriedade",
+  "description": "Relógio da Abstinência",
+  "productName": "Relógio da Abstinência",
   "author": "Murilo Oliveira <muriloodss@gmail.com>",
   "private": true,
   "scripts": {
