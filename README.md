@@ -1,6 +1,6 @@
-# Relógio da Sobriedade (relogio-sobriedade)
+# Relógio da Abstinência (relogio-abstinência)
 
-Relógio da Sobriedade
+Relógio da Abstinência
 
 ## Install the dependencies
 ```bash
