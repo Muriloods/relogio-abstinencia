@@ -1,4 +1,4 @@
-# Relógio da Abstinência (relogio-abstinência)
+# Relógio da Abstinência (relogio-abstinencia)
 
 Relógio da Abstinência
 
